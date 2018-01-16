@@ -25,7 +25,8 @@ public class SendMail1 implements Runnable { // didalam kelas sendemail mengimpl
         final String username = "thtpbo@gmail.com"; // deklarasi email pengirim pesan
         final String password = "auldianindah"; // deklarasi password email pengirim pesan
         String subject;
-        String to = "auliya.aqma.tif16@polban.ac.id, nurindah.yuniarti.tif16@polban.ac.id, putri.dian.tif16@polban.ac.id";
+        String to = "auliya.aqma.tif16@polban.ac.id";
+        //String to = "auliya.aqma.tif16@polban.ac.id, nurindah.yuniarti.tif16@polban.ac.id, putri.dian.tif16@polban.ac.id";
         String pesan = "Hi " + to +
                         "\n\nAnda mendapatkan undangan dari " + username + 
                         " untuk mendaftar sebagai user di Portal Tenaga Kerja di PT. Oil & Gas." +
@@ -74,6 +75,7 @@ public class SendMail1 implements Runnable { // didalam kelas sendemail mengimpl
             System.out.println("Email Terkirim"); // status yang akan di tampilkan jika pesan berhasil di kirimkan.
 
         } catch (MessagingException e) {
+            System.out.println("Pesan Gagal Dikirim");
             throw new RuntimeException(e); // batasan waktu dalam memperoses pengiriman pesan, jika proses terjadi melebihi waktu makan proses dinyatakan gagal
         }      
     }
