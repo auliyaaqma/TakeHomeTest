@@ -1,0 +1,83 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package cobaThread;
+
+/**
+ *
+ * @author ASUS
+ */
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
+
+public class SendMail1 implements Runnable { // didalam kelas sendemail mengimplementasi kan beberapa fungsi yang ada di dalam interface runnable
+        // 
+        final String username = "thtpbo@gmail.com"; // deklarasi email pengirim pesan
+        final String password = "auldianindah"; // deklarasi password email pengirim pesan
+        String subject;
+        
+    public static void main(String[] args) { 
+           for (int i=0;i<3;i++) { // pengulangan pengiriman email. 
+            SendMail1 mail = new SendMail1 (); // membuat object mail di dalam method SendEmail.
+            mail.setSubject("Test Email Thread " + i); // setiap subject yang terkirim bertambah 1 dan akan sesuai sesuai pengulangan.
+            Thread tr = new Thread (mail); // object mail menerapkan Thread dan membuat object tr 
+            tr.start(); // thread di mulai   
+           }
+    }
+    
+    public String setSubject (String sub) { // untuk menampung subject karena subject harus berbeda- beda.
+        return this.subject=sub;       // 
+    }
+    
+    public void send () { // menthod send () dimana di dalamnya mengimplementasikan  
+        
+        Properties props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true"); 
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+          });
+        try {
+            Message message = new MimeMessage(session); // membuat object baru  (message)
+            message.setFrom(new InternetAddress("thtpbo@gmail.com")); // email pengirim
+            message.setRecipients(Message.RecipientType.TO,
+                    //email penerima email(pesan)
+                InternetAddress.parse("auliyaaqma@gmail.com, auliya.aqma.tif16@polban.ac.id, nurindah.yuniarti.tif16@polban.ac.id, putri.dian.tif16@polban.ac.id"));
+            
+                message.setSubject(subject); // mengisi subject pada email yang akan di kirim
+                message.setText("Semangat Tugas OOP nya ya," // pesan atau isi yang akan di kirimkan kepada penerima email
+                + "\n\n Pasti Bisa!");
+
+            Transport.send(message); // mengirimkan pesan 
+            
+            
+            
+            System.out.println("Email Terkirim"); // status yang akan di tampilkan jika pesan berhasil di kirimkan.
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e); // batasan waktu dalam memperoses pengiriman pesan, jika proses terjadi melebihi waktu makan proses dinyatakan gagal
+        }      
+    }
+    
+    @Override
+    public void run() { // menjalanan method run untuk mengirim email 
+       this.send();
+    }
+}
