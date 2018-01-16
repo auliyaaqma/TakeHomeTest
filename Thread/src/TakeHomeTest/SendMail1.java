@@ -47,13 +47,15 @@ public class SendMail1 implements Runnable { // didalam kelas sendemail mengimpl
     public void send () { // menthod send () dimana di dalamnya mengimplementasikan  
         
         Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true"); 
+        props.put("mail.smtp.starttls.enable", "true");  // TLS : Properti untuk menggunakan TLS, dimana TLS adalah penerus dari SSL. Default portnya adalah 587.
         props.put("mail.smtp.auth", "true"); // Authentikasi : mengisyaratkan Java Mail untuk melakukan authentikasi menggunakan username dan password untuk account email yang bersangkutan.
         props.put("mail.smtp.host", "smtp.gmail.com"); // Alamat host SMTP
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "587"); //  Port : Properti untuk mengatur port dari server SMTP. Jika tidak diatur maka akan menggunakan port default yang sesuai dengan metode pengirimannya, jika SSL menggunakan 465 dan jika TLS menggunakan 587 dan jika tidak diatur SSL atau TLS maka akan menggunakan port lama 25.
 
-        Session session = Session.getInstance(props,
-          new javax.mail.Authenticator() {
+        
+        // Session : Properti yang sudah diatur dijadikan argument untuk Session yang nantinya akan terhubung ke server SMTP.
+        Session session = Session.getInstance(props, 
+          new javax.mail.Authenticator() { 
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
             }
